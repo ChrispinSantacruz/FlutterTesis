@@ -3,13 +3,17 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import '../models/tesis.dart';
-import '../data/tesis_data.dart';
+import '../services/tesis_services.dart';
 
 class AgregarTesisScreen extends StatefulWidget {
   final Function(Tesis) onAgregarTesis;
   final String username;
 
-  const AgregarTesisScreen({required this.onAgregarTesis, required this.username, Key? key}) : super(key: key);
+  const AgregarTesisScreen({
+    required this.onAgregarTesis,
+    required this.username,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _AgregarTesisScreenState createState() => _AgregarTesisScreenState();
@@ -28,29 +32,29 @@ class _AgregarTesisScreenState extends State<AgregarTesisScreen> {
     );
 
     if (result != null) {
-      if (kIsWeb) {
-        setState(() {
+      setState(() {
+        if (kIsWeb) {
           _archivoBytes = result.files.single.bytes;
           _archivo = result.files.single.name;
-        });
-      } else {
-        setState(() {
+        } else {
           _archivo = result.files.single.path;
-        });
-      }
+        }
+      });
     }
   }
 
   void _guardarTesis() {
-    if (_tituloController.text.isNotEmpty && _descripcionController.text.isNotEmpty && (_archivo != null || _archivoBytes != null)) {
-      Tesis nuevaTesis = Tesis(
+    if (_tituloController.text.isNotEmpty &&
+        _descripcionController.text.isNotEmpty &&
+        (_archivo != null || _archivoBytes != null)) {
+      final nuevaTesis = Tesis(
         titulo: _tituloController.text,
         descripcion: _descripcionController.text,
         archivo: _archivo!,
         autor: widget.username,
       );
 
-      TesisService().addTesis(nuevaTesis);  // Conexión a Firebase
+      TesisService().addTesis(nuevaTesis); // Conexión a Firebase
       widget.onAgregarTesis(nuevaTesis);
       Navigator.pop(context);
     }
@@ -77,7 +81,11 @@ class _AgregarTesisScreenState extends State<AgregarTesisScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _seleccionarArchivo,
-              child: Text(_archivo == null ? 'Seleccionar Archivo PDF' : 'Archivo: $_archivo'),
+              child: Text(
+                _archivo == null
+                    ? 'Seleccionar Archivo PDF'
+                    : 'Archivo: $_archivo',
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(

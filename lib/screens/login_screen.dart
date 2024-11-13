@@ -3,6 +3,8 @@ import 'agregar_tesis.dart';
 import 'lista_tesis.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -15,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -24,43 +26,45 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             TextField(
               controller: _userController,
-              decoration: InputDecoration(labelText: 'Usuario'),
+              decoration: const InputDecoration(labelText: 'Usuario'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Contraseña'),
+              decoration: const InputDecoration(labelText: 'Contraseña'),
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
-              child: Text('Ingresar como Docente'),
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ListaTesisScreen(
-                        role: 'docente', username: _userController.text),
+                      role: 'docente',
+                      username: _userController.text,
+                    ),
                   ),
                 );
               },
+              child: const Text('Ingresar como Docente'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
-              child: Text('Ingresar como Estudiante'),
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => AgregarTesisScreen(
                       onAgregarTesis: (nuevaTesis) {
-                        print('Tesis agregada: ${nuevaTesis.titulo}');
+                        debugPrint('Tesis agregada: ${nuevaTesis.titulo}');
                       },
                       username: _userController.text,
                     ),
                   ),
                 );
               },
+              child: const Text('Ingresar como Estudiante'),
             ),
           ],
         ),
