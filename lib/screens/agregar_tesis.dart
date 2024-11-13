@@ -12,14 +12,14 @@ class AgregarTesisScreen extends StatefulWidget {
   const AgregarTesisScreen({
     required this.onAgregarTesis,
     required this.username,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
-  _AgregarTesisScreenState createState() => _AgregarTesisScreenState();
+  AgregarTesisScreenState createState() => AgregarTesisScreenState();
 }
 
-class _AgregarTesisScreenState extends State<AgregarTesisScreen> {
+class AgregarTesisScreenState extends State<AgregarTesisScreen> {
   final _tituloController = TextEditingController();
   final _descripcionController = TextEditingController();
   String? _archivo;
@@ -43,20 +43,30 @@ class _AgregarTesisScreenState extends State<AgregarTesisScreen> {
     }
   }
 
-  void _guardarTesis() {
+  void _guardarTesis() async {
     if (_tituloController.text.isNotEmpty &&
         _descripcionController.text.isNotEmpty &&
         (_archivo != null || _archivoBytes != null)) {
+      
+      // Crear una nueva instancia de Tesis sin ID, ya que será asignado por Firebase
       final nuevaTesis = Tesis(
+        id: '', // ID temporal
         titulo: _tituloController.text,
         descripcion: _descripcionController.text,
         archivo: _archivo!,
         autor: widget.username,
       );
 
-      TesisService().addTesis(nuevaTesis); // Conexión a Firebase
+      // Guardar la tesis en Firebase y obtener el ID generado
+      final tesisRef = await TesisService().addTesis(nuevaTesis);
+      nuevaTesis.id = tesisRef.id; // Asigna el ID generado por Firebase
+      
       widget.onAgregarTesis(nuevaTesis);
-      Navigator.pop(context);
+
+      // Verificar que el widget esté montado antes de navegar
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 
