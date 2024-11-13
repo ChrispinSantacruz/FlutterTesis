@@ -1,0 +1,49 @@
+// Archivo de Gradle del módulo (nivel de app) (<project>/<app-module>/build.gradle)
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'com.google.gms.google-services' // Complemento de servicios de Google
+}
+
+android {
+    namespace = "com.example.apptesis"
+    compileSdk = 33
+    ndkVersion = "23.1.7779620"
+
+    defaultConfig {
+        applicationId = "com.example.apptesis"
+        minSdk = 21
+        targetSdk = 33
+        versionCode = 1
+        versionName = "1.0.0"
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+}
+
+dependencies {
+    // Importa la Firebase BoM para mantener las versiones de Firebase compatibles
+    implementation platform('com.google.firebase:firebase-bom:33.5.1')
+
+    // Agrega dependencias para los productos de Firebase que necesitas
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-firestore'
+}
+
+flutter {
+    source = "../.."
+}

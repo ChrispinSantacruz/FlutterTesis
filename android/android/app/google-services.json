@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "852266655674",
+    "project_id": "tesisbasededato",
+    "storage_bucket": "tesisbasededato.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852266655674:android:3fa3dcb81076ed2e900783",
+        "android_client_info": {
+          "package_name": "com.example.apptesis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUND71tiQE-G7zXYd71uAjDlIi1jkuDf8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
