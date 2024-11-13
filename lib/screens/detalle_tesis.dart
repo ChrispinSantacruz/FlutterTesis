@@ -22,13 +22,12 @@ class DetalleTesisScreenState extends State<DetalleTesisScreen> {
   final TextEditingController _comentarioController = TextEditingController();
 
   void _cambiarEstado(String nuevoEstado) async {
-    setState(() {
-      widget.tesis.estado = nuevoEstado;
-      if (nuevoEstado == 'rechazada') {
-        widget.tesis.comentario = _comentarioController.text;
-      }
-      widget.tesis.evaluador = widget.evaluador;
-    });
+    widget.tesis.estado = nuevoEstado;
+    widget.tesis.evaluador = widget.evaluador;
+
+    if (nuevoEstado == 'rechazada') {
+      widget.tesis.comentario = _comentarioController.text;
+    }
 
     await TesisService().updateTesis(widget.tesis);
 
@@ -139,26 +138,9 @@ class DetalleTesisScreenState extends State<DetalleTesisScreen> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.download),
-                        label: const Text('Descargar PDF'),
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Descargando ${widget.tesis.archivo}'),
-                          ));
-                        },
-                      ),
                     ],
                   )
-                : ElevatedButton.icon(
-                    icon: const Icon(Icons.download),
-                    label: const Text('Descargar PDF'),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Descargando ${widget.tesis.archivo}'),
-                      ));
-                    },
-                  ),
+                : const SizedBox.shrink(),
           ],
         ),
       ),

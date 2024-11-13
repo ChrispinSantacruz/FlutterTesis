@@ -6,40 +6,19 @@ class TesisService {
 
   // Método para agregar una nueva tesis y devolver el DocumentReference
   Future<DocumentReference> addTesis(Tesis nuevaTesis) async {
-    try {
-      final tesisRef = await tesisCollection.add({
-        'titulo': nuevaTesis.titulo,
-        'descripcion': nuevaTesis.descripcion,
-        'archivo': nuevaTesis.archivo,
-        'estado': nuevaTesis.estado,
-        'autor': nuevaTesis.autor,
-        'evaluador': nuevaTesis.evaluador,
-        'comentario': nuevaTesis.comentario,
-      });
-      print('Tesis agregada exitosamente');
-      return tesisRef;
-    } catch (e) {
-      print('Error al agregar tesis: $e');
-      rethrow;
-    }
+    final tesisRef = await tesisCollection.add(nuevaTesis.toMap());
+    return tesisRef;
   }
 
-  // Método para actualizar una tesis existente
+  // Obtener una lista de tesis en tiempo real
+  Stream<List<Tesis>> getTesis() {
+    return tesisCollection.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => Tesis.fromDocumentSnapshot(doc)).toList();
+    });
+  }
+
+  // Actualizar una tesis existente
   Future<void> updateTesis(Tesis tesis) async {
-    try {
-      await tesisCollection.doc(tesis.id).update({
-        'titulo': tesis.titulo,
-        'descripcion': tesis.descripcion,
-        'archivo': tesis.archivo,
-        'estado': tesis.estado,
-        'autor': tesis.autor,
-        'evaluador': tesis.evaluador,
-        'comentario': tesis.comentario,
-      });
-      print('Tesis actualizada exitosamente');
-    } catch (e) {
-      print('Error al actualizar tesis: $e');
-      rethrow;
-    }
+    await tesisCollection.doc(tesis.id).update(tesis.toMap());
   }
 }
